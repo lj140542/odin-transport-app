@@ -1,0 +1,14 @@
+extends layout
+
+block content
+  h1= title
+
+  ul
+    each driver in driver_list
+      li
+        a(href=driver.url) #{driver.full_name}
+        if driver.age
+          |  (#{driver.age})
+
+    else
+      li There are no driver.

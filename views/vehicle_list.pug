@@ -1,0 +1,18 @@
+extends layout
+
+block content
+  h1= title
+
+    each type in types
+      h2 #{type}
+      ul
+        each vehicle in vehicle_list
+          if vehicle.vehicle_type == type
+            li
+              a(href=vehicle.url) #{vehicle.registration_number} 
+        
+        else
+          li There are no #{type}.
+            
+    else
+      li There are no vehicle.

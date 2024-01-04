@@ -1,0 +1,16 @@
+extends layout
+
+block content
+  h1= title
+  p Welcome to the schedule 
+
+  h2 Content 
+  
+  p In the schedule there is :
+
+  ul 
+    li #[a(href='schedule/missions') #[strong Mission:]] !{mission_count}
+    li #[a(href='schedule/customers') #[strong Customer:]] !{customer_count}
+    li #[a(href='schedule/drivers') #[strong Driver:]] !{driver_count}
+    li #[a(href='schedule/vehicles') #[strong Vehicle:]] !{vehicle_count}
+    

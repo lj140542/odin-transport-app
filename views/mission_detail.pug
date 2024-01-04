@@ -1,0 +1,16 @@
+extends layout
+
+block content
+  h1= title
+
+  ul 
+    li Start : #{mission.formatted_start_date}
+    li End : #{mission.formatted_end_date}
+    li Customer : 
+      a(href=mission.customer.url) #{mission.customer.name}
+    if (mission.driver) 
+      li Driver : 
+        a(href=mission.driver.url) #{mission.driver.full_name} 
+    if (mission.vehicle) 
+      li #{mission.vehicle.vehicle_type} : 
+        a(href=mission.vehicle.url) #{mission.vehicle.registration_number}

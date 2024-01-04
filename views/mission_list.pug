@@ -1,0 +1,12 @@
+extends layout
+
+block content
+  h1= title
+
+  ul
+    each mission in mission_list
+      li
+        a(href=mission.url) [#{mission.id}] 
+
+    else
+      li There are no mission.

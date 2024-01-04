@@ -1,0 +1,12 @@
+extends layout
+
+block content
+  h1= title
+
+  ul
+    each customer in customer_list
+      li
+        a(href=customer.url) #{customer.name} 
+
+    else
+      li There are no customer.

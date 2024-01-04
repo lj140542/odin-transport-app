@@ -1,0 +1,17 @@
+extends layout
+
+block content
+  h1= title
+
+  p age : 
+    if (age)
+    |  (#{age})
+
+  p missions assigned :
+  
+  ul
+    each mission in missions_assigned
+      li #[a(href=mission.url) #{mission.id}]
+
+    else
+        li There are no mission assigned to this driver.
