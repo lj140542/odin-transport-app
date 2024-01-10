@@ -1,0 +1,21 @@
+extends layout
+
+block content
+  h1= title
+
+  form(method='POST' action='')
+    div.form-group
+      label(for='first_name') First name:
+      input#first_name.form-control(type='text', placeholder='Driver first name' name='first_name' required='true' value=(undefined===driver ? '' : driver.first_name) )
+    div.form-group
+      label(for='family_name') Family name:
+      input#family_name.form-control(type='text', placeholder='Driver family name' name='family_name' required='true' value=(undefined===driver ? '' : driver.family_name) )
+    div.form-group
+      label(for='age') Age:
+      input#age.form-control(type='numeric', placeholder='Driver age' name='age' value=(undefined===driver ? '' : driver.age) )
+    button.btn.btn-primary(type='submit') Submit
+
+  if errors
+    ul
+      for error in errors
+        li!= error.msg

@@ -1,0 +1,24 @@
+extends layout
+
+block content
+  h1= title
+
+  h2 #{driver.full_name} (#{driver.age})
+
+  if (mission_list.length == 0)
+    p Do you really want to delete this driver ?
+    form(method='POST' action='')
+      div.form-group
+        input#driverid(hidden=true, name='driverid', required=true, value=(driver._id))
+      button.btn.btn-primary(type='submit') Confirm
+  else 
+    p This driver is assigned to the following missions. Deletion impossible.
+    ul 
+      for mission in mission_list 
+        li 
+          a(href=mission.url) #{mission.id} 
+
+  if errors
+    ul
+      for error in errors
+        li!= error.msg

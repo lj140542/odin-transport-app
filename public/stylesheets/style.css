@@ -10,8 +10,25 @@ a {
   color: #00B7FF;
 }
 
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: fit-content;
+}
+
+.form-group {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+}
+
 .sidebar-nav {
   margin-top: 20px;
   padding: 0;
   list-style: none;
+}
+
+.action-links {
+  display: flex;
+  gap: 1rem;
 }

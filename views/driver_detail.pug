@@ -4,8 +4,8 @@ block content
   h1= title
 
   p age : 
-    if (age)
-    |  (#{age})
+    if (driver.age)
+    |  (#{driver.age})
 
   p missions assigned :
   
@@ -15,3 +15,9 @@ block content
 
     else
         li There are no mission assigned to this driver.
+
+  hr
+
+  div.action-links
+    a(href=driver.url+'/delete') Delete
+    a(href=driver.url+'/update') Update
