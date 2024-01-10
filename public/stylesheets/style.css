@@ -19,7 +19,7 @@ form {
 
 .form-group {
   display: grid;
-  grid-template-columns: 100px 1fr;
+  grid-template-columns: 1fr 1fr;
 }
 
 .sidebar-nav {

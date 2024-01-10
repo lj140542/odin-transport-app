@@ -4,8 +4,8 @@ block content
   h1= title
 
   p type : 
-    if (type)
-    |  (#{type})
+    if (vehicle.vehicle_type)
+    |  (#{vehicle.vehicle_type})
 
   p missions assigned :
   
@@ -15,3 +15,9 @@ block content
 
     else
         li There are no mission assigned to this vehicle.
+  
+  hr
+
+  div.action-links
+    a(href=vehicle.url+'/delete') Delete
+    a(href=vehicle.url+'/update') Update
