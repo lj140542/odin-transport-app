@@ -4,4 +4,29 @@ html
     title= title
     link(rel='stylesheet', href='/stylesheets/style.css')
   body
-    block content
+    div#sidebar
+      block sidebar
+        ul(class='sidebar-nav')
+          li
+            a(href='/schedule') Home
+          li
+            a(href='/schedule/drivers') All drivers
+          li
+            a(href='/schedule/vehicles') All vehicles
+          li
+            a(href='/schedule/customers') All customers
+          li
+            a(href='/schedule/missions') All driver-instances
+          li
+            hr
+          li
+            a(href='/schedule/vehicles/create') Create new vehicle
+          li
+            a(href='/schedule/customers/create') Create new customer
+          li
+            a(href='/schedule/drivers/create') Create new driver
+          li
+            a(href='/schedule/missions/create') Create new mission
+
+    div#content
+      block content
