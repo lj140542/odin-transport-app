@@ -11,7 +11,7 @@ block content
       label(for='vehicle_type') Vehicle type: 
       select#vehicle_type.form-control(name='vehicle_type' required='true' )
         for vehicle_type in vehicle_types 
-          option(value=vehicle_type selected=(vehicle_type==vehicle.vehicle_type)) #{vehicle_type}
+          option(value=vehicle_type selected=(undefined!==vehicle && vehicle_type==vehicle.vehicle_type)) #{vehicle_type}
     button.btn.btn-primary(type='submit') Submit
 
   if errors
