@@ -1,0 +1,42 @@
+extends layout
+
+block content
+  h1= title
+
+  form(method='POST' action='')
+    div.form-group
+      label(for='start_date') Start date:
+      input#start_date.form-control(type='date' name='start_date' required='true' value=(undefined===mission ? '' : mission.formatted_start_date))
+    div.form-group
+      label(for='end_date') End date:
+      input#end_date.form-control(type='date' name='end_date' required='true' value=(undefined===mission ? '' : mission.formatted_end_date))
+    div.form-group
+      label(for='customer') Customer:
+      select#customer.form-control(type='select', placeholder='Select customer' name='customer' required='true' )
+        for customer in customers
+          if mission
+            option(value=customer._id selected=(customer._id.toString()===mission.customer._id.toString() ? 'selected' : false) ) #{customer.name}
+          else
+            option(value=customer._id) #{customer.name}
+    div.form-group
+      label(for='driver') Driver:
+      select#driver.form-control(type='select', placeholder='Select driver' name='driver' )
+        for driver in drivers
+          if mission
+            option(value=driver._id selected=(driver._id.toString()===mission.driver._id.toString() ? 'selected' : false) ) #{driver.full_name}
+          else
+            option(value=driver._id) #{driver.full_name}
+    div.form-group
+      label(for='vehicle') Vehicle:
+      select#vehicle.form-control(type='select', placeholder='Select vehicle' name='vehicle' )
+        for vehicle in vehicles
+          if mission
+            option(value=vehicle._id selected=(vehicle._id.toString()===mission.vehicle._id.toString() ? 'selected' : false) ) #{vehicle.registration_number}
+          else
+            option(value=vehicle._id) #{vehicle.registration_number}
+    button.btn.btn-primary(type='submit') Submit
+
+  if errors
+    ul
+      for error in errors
+        li!= error.msg

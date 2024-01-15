@@ -14,3 +14,9 @@ block content
     if (mission.vehicle) 
       li #{mission.vehicle.vehicle_type} : 
         a(href=mission.vehicle.url) #{mission.vehicle.registration_number}
+
+  hr
+
+  div.action-links
+    a(href=mission.url+'/delete') Delete
+    a(href=mission.url+'/update') Update

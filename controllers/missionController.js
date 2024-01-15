@@ -5,8 +5,7 @@ const Customer = require("../models/customer");
 const Driver = require("../models/driver");
 const Mission = require("../models/mission");
 const Vehicle = require("../models/vehicle");
-
-
+const { body, validationResult } = require("express-validator");
 
 exports.index = asyncHandler(async (req, res, next) => {
   const [
@@ -57,30 +56,173 @@ exports.mission_detail = asyncHandler(async (req, res, next) => {
 
 // display mission create form on GET
 exports.mission_create_get = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: Mission create GET");
+  const [customers, drivers, vehicles] = await Promise.all([
+    Customer.find().sort({ name: 1 }).exec(),
+    Driver.find().sort({ family_name: 1, first_name: 1 }).exec(),
+    Vehicle.find().sort({ registration_number: 1 }).exec(),
+  ]);
+
+  res.render('mission_form', {
+    title: 'Create mission',
+    customers: customers,
+    drivers: drivers,
+    vehicles: vehicles
+  });
 });
 
 // handle mission create form on POST
-exports.mission_create_post = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: Mission create POST");
-});
+exports.mission_create_post = [
+  body('start_date', 'Invalid start date')
+    .isISO8601()
+    .toDate(),
+  body('end_date', 'Invalid end date')
+    .isISO8601()
+    .toDate()
+    .custom((end_date, { req }) => {
+      if (end_date < req.body.start_date) {
+        throw new Error('Start date must be before end date');
+      }
+      return true;
+    }),
+  body('customer', 'Customer must not be empty')
+    .trim()
+    .isLength({ min: 1 })
+    .escape(),
+
+  asyncHandler(async (req, res, next) => {
+    const errors = validationResult(req);
+
+    const mission = new Mission({
+      start_date: req.body.start_date,
+      end_date: req.body.end_date,
+      customer: req.body.customer,
+      driver: req.body.driver,
+      vehicle: req.body.vehicle
+    });
+
+    if (!errors.isEmpty()) {
+      const [customers, drivers, vehicles] = await Promise.all([
+        Customer.find().sort({ name: 1 }).exec(),
+        Driver.find().sort({ family_name: 1, first_name: 1 }).exec(),
+        Vehicle.find().sort({ registration_number: 1 }).exec(),
+      ]);
+
+      res.render('mission_form', {
+        title: 'Create mission',
+        mission: mission,
+        customers: customers,
+        drivers: drivers,
+        vehicles: vehicles,
+        errors: errors.array()
+      });
+      return;
+    }
+    else {
+      await mission.save();
+      res.redirect(mission.url);
+    }
+  })
+];
 
 // display mission update form on GET 
 exports.mission_update_get = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: Mission update GET");
+  const [mission, customers, drivers, vehicles] = await Promise.all([
+    Mission.findById(req.params.id).exec(),
+    Customer.find().sort({ name: 1 }).exec(),
+    Driver.find().sort({ family_name: 1, first_name: 1 }).exec(),
+    Vehicle.find().sort({ registration_number: 1 }).exec(),
+  ]);
+
+  res.render('mission_form', {
+    title: 'Create mission',
+    mission: mission,
+    customers: customers,
+    drivers: drivers,
+    vehicles: vehicles
+  });
 });
 
 // handler mission update form on POST
-exports.mission_update_post = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: Mission update POST");
-});
+exports.mission_update_post = [
+  body('start_date', 'Invalid start date')
+    .isISO8601()
+    .toDate(),
+  body('end_date', 'Invalid end date')
+    .isISO8601()
+    .toDate()
+    .custom((end_date, { req }) => {
+      if (end_date < req.body.start_date) {
+        throw new Error('Start date must be before end date');
+      }
+      return true;
+    }),
+  body('customer', 'Customer must not be empty')
+    .trim()
+    .isLength({ min: 1 })
+    .escape(),
+
+  asyncHandler(async (req, res, next) => {
+    const errors = validationResult(req);
+
+    const mission = new Mission({
+      start_date: req.body.start_date,
+      end_date: req.body.end_date,
+      customer: req.body.customer,
+      driver: req.body.driver,
+      vehicle: req.body.vehicle,
+      _id: req.params.id
+    });
+
+    if (!errors.isEmpty()) {
+      const [customers, drivers, vehicles] = await Promise.all([
+        Customer.find().sort({ name: 1 }).exec(),
+        Driver.find().sort({ family_name: 1, first_name: 1 }).exec(),
+        Vehicle.find().sort({ registration_number: 1 }).exec(),
+      ]);
+
+      res.render('mission_form', {
+        title: 'Create mission',
+        mission: mission,
+        customers: customers,
+        drivers: drivers,
+        vehicles: vehicles,
+        errors: errors.array()
+      });
+      return;
+    }
+    else {
+      const updatedMission = await Mission.findByIdAndUpdate(req.params.id, mission);
+      res.redirect(updatedMission.url);
+    }
+  })
+];
 
 // display mission delete form on GET
 exports.mission_delete_get = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: Mission delete GET");
+  const mission = await Mission.findById(req.params.id).populate('customer').exec();
+
+  if (mission == null) {
+    let err = new Error('Mission not found');
+    err.status = 404;
+    return next(err);
+  }
+
+  res.render('mission_delete', {
+    title: 'Delete mission',
+    mission: mission
+  });
 });
 
 // handle mission delete form on POST
 exports.mission_delete_post = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: Mission delete POST");
+  const mission = await Mission.findById(req.params.id).populate('customer').exec();
+
+  if (mission == null) {
+    let err = new Error('Mission not found');
+    err.status = 404;
+    return next(err);
+  }
+
+  await Mission.findByIdAndDelete(req.params.id);
+  res.redirect('/schedule/missions');
 });

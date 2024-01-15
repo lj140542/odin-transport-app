@@ -1,0 +1,17 @@
+extends layout
+
+block content
+  h1= title
+
+  h2 #{mission.id} (#{mission.customer.name} / #{mission.span})
+
+  p Do you really want to delete this mission ?
+  form(method='POST' action='')
+    div.form-group
+      input#missionid(hidden=true, name='missionid', required=true, value=(mission._id))
+    button.btn.btn-primary(type='submit') Confirm
+  
+  if errors
+    ul
+      for error in errors
+        li!= error.msg
