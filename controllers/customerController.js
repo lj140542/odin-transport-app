@@ -60,7 +60,7 @@ exports.customer_create_post = [
       res.render('customer_form', {
         title: "Create customer",
         customer: customer,
-        errors: errors
+        errors: errors.array()
       });
       return;
     }
@@ -109,7 +109,7 @@ exports.customer_update_post = [
       res.render('customer_form', {
         title: "Create customer",
         customer: customer,
-        errors: errors
+        errors: errors.array()
       });
       return;
     }
