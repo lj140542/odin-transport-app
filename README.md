@@ -1,4 +1,4 @@
-# Odin Shopping Cart
+# Odin Transport App
 
 ## 🔍 Description
 This project is part of The Odin Project's JavaScript curriculum. This project goal was to build an inventory application using ExpressJS.
